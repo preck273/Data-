@@ -1,0 +1,10 @@
+//The StatusStation property can either be Offline or Online
+{
+    "StationID": 101,
+    "StatusStation": "Online"
+}
+
+<stations>
+    <StationID>102</StationID>
+    <StatusStation>Offline</StatusStation>
+</stations>

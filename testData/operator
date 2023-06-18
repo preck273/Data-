@@ -1,0 +1,12 @@
+//minimum length for password is 4
+{
+    "operatorID": 31,
+    "Password": "12344",
+    "Authorization": "Precious"
+}
+
+<operators>
+    <operatorID>32</operatorID>
+    <Password>12345</Password>
+    <Authorization>Edit</Authorization>
+</operators>
