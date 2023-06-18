@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.3.0/dist/chart.umd.min.js"></script>
+    <title>Carrier and Station</title>
+</head>
+<body>
+<!-- Canvas element to render the chart -->
+<canvas id="chart" width="500" height="180"></canvas>
+
+<script>
+    // Variables to store data
+    let carrierStationID, statusCarrier, statusStation;
+    let countNumberOfStationID = {};
+    let countNumberOfStatusCarrier = {};
+    let countNumberOfStatusStation = {};
+
+    // Function to display the chart
+    displayChart();
+
+    async function displayChart() {
+        await getCarrierData();
+        await getStationData();
+
+        // Create a new chart using Chart.js
+        const ctx = document.getElementById('chart').getContext('2d');
+        const mixedChart = new Chart(ctx, {
+            data: {
+                datasets: [
+                    {
+                        type: 'bar',
+                        label: ['Counted number of station ID'],
+                        barPercentage: 0.4,
+                        data: countNumberOfStationID,
+                    },
+                    {
+                        type: 'line',
+                        label: 'Station',
+                        barPercentage: 0.4,
+                        data: countNumberOfStatusCarrier,
+                    },
+                ],
+            },
+        });
+    }
+
+    // Function to fetch carrier data
+    async function getCarrierData() {
+        await fetch('http://localhost:9000/api/carrier', {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/xml'
+            },
+        }).then(res => {
+            return res.text();
+        }).then(data => {
+            let parser = new DOMParser();
+            let xmlData = parser.parseFromString(data, "application/xml");
+            let stationId = xmlData.getElementsByTagName('StationID');
+            let carrierName = xmlData.getElementsByTagName('StatusCarrier');
+
+            // Loop through the station IDs
+            for (let i = 0; i < stationId.length; i++) {
+                carrierStationID = stationId[i].firstChild.nodeValue;
+
+                // Count the number of station IDs
+                if (countNumberOfStationID[carrierStationID]) {
+                    countNumberOfStationID[carrierStationID]++;
+                } else {
+                    countNumberOfStationID[carrierStationID] = 1;
+                }
+                console.log(countNumberOfStationID);
+            }
+
+            // Loop through the carrier names
+            for (let i = 0; i < carrierName.length; i++) {
+                statusCarrier = carrierName[i].firstChild.nodeValue;
+
+                // Count the number of status carriers
+                if (countNumberOfStatusCarrier[statusCarrier]) {
+                    countNumberOfStatusCarrier[statusCarrier]++;
+                } else {
+                    countNumberOfStatusCarrier[statusCarrier] = 1;
+                }
+                console.log(countNumberOfStatusCarrier);
+            }
+        });
+    }
+
+    // Function to fetch station data
+    async function getStationData() {
+        await fetch('http://localhost:9000/api/station', {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/xml'
+            },
+        }).then(res => {
+            return res.text();
+        }).then(data => {
+            let parser = new DOMParser();
+            let xmlData = parser.parseFromString(data, "application/xml");
+            let stationStatus = xmlData.getElementsByTagName('StatusStation');
+
+            // Loop through the station statuses
+            for (let i = 0; i < stationStatus.length; i++) {
+                statusStation = stationStatus[i].firstChild.nodeValue;
+
+                // Count the number of status stations
+                if (countNumberOfStatusStation[statusStation]) {
+                    countNumberOfStatusStation[statusStation]++;
+                } else {
+                    countNumberOfStatusStation[statusStation]++;
+                }
+                console.log(countNumberOfStatusStation);
+            }
+        });
+    }
+</script>
+</body>
+</html>

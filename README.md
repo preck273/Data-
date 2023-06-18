@@ -1,14 +1,12 @@
 Module: Data processing
 
-Student: Precious 
-
 ## Getting Started
 
-Ensure that you have node installed on your PC before executing the server to test the different endpoints. You can type this in the terminal to know if Node JS is already installed:
+Ensure that you have node installed on your PC before executing the server to test the different endpoints. You can execute the below command in the terminal to know if Node JS is already installed:
 
 `node -v`
 
-If there is a version present there is Node JS on your PC. If not download the LTS version from this link: https://nodejs.org/en.
+If Node.js is already installed on your computer, then you are good to go, otherwise, you can download the Long-Term Support (LTS) version of Node.js from the following site if you don't already have it installed: [https://nodejs.org/en].
 
 
 ## **Summary of the project structure**:
@@ -23,19 +21,17 @@ If there is a version present there is Node JS on your PC. If not download the L
 
 **Testing the API endpoints**:  Postman or insomnia tool can be used. But preferably Postman link to download https://www.postman.com/downloads/
 
-**Database**: **DB browser for SQLite** can be you used. You can load the database using this tool, which can be found in the root of the project as **database.sqlite**. This can be used to view the data and tables but its not needed to test the endpoints. Link to download https://sqlitebrowser.org/dl/
+**Database**: **DB browser for SQLite** should be used. You can load the database using this tool, which can be found in the root of the project as **database.sqlite**. This tool enables you to view the data and tables within the database. However, it is not necessary for testing the endpoints. You can download the DB browser from the following link: https://sqlitebrowser.org/dl/.
 
-## Installation 
+## Installation
 
-After you clone the project or download the project manually using any code editor preferably IntelliJ or Visual studio code
-
-To install all the packages needed do this:
+To install all the required packages, please clone or manually download the project from github using and launch it using any code editor, preferably IntelliJ or Visual Studio Code. Afterwards, open the terminal in IntelliJ and execute the following command:
 
 `npm install`
 
 ## How to Run
 
-To run the server do this:
+To run the server execute the following command:
 
 `npm start`
 

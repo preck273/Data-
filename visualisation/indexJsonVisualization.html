@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.3.0/dist/chart.umd.min.js"></script>
+    <title>Carrier and Station</title>
+</head>
+<body>
+<!-- Canvas element to render the chart -->
+<canvas id="chart" width="500" height="180"></canvas>
+
+<script>
+    // Variables to store data
+    let carrierStationID, statusCarrier, statusStation;
+    let countNumberOfStationID = {};
+    let countNumberOfStatusCarrier = {};
+    let countNumberOfStatusStation = {};
+
+
+    displayChart();
+
+    // Function to display the chart
+    async function displayChart() {
+        await getCarrierData();
+        await getStationData();
+
+        // Create a new chart using Chart.js
+        const ctx = document.getElementById('chart').getContext('2d');
+        const mixedChart = new Chart(ctx, {
+            data: {
+                datasets: [
+                    {
+                        type: 'bar',
+                        label: ['Counted number of station ID'],
+                        barPercentage: 0.4,
+                        data: countNumberOfStationID,
+                    },
+                    {
+                        type: 'line',
+                        label: 'Station',
+                        barPercentage: 0.4,
+                        data: countNumberOfStatusCarrier,
+                    },
+                ],
+            },
+        });
+    }
+
+    // Function to fetch carrier data
+    async function getCarrierData() {
+        await fetch('http://localhost:9000/api/carrier', {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+        }).then(res => {
+            return res.json();
+        }).then(data => {
+            let carrierJson = data.carriers.carrier;
+            // Loop through the carrier data
+            for (let i = 0; i < carrierJson.length; i++) {
+                carrierStationID = carrierJson[i].StationID;
+                statusCarrier = carrierJson[i].StatusCarrier;
+
+                // Count the number of station IDs and status carriers
+                if (countNumberOfStationID[carrierStationID] || countNumberOfStatusCarrier[statusCarrier]) {
+                    countNumberOfStationID[carrierStationID]++;
+                    countNumberOfStatusCarrier[statusCarrier]++;
+                } else {
+                    countNumberOfStationID[carrierStationID] = 1;
+                    countNumberOfStatusCarrier[statusCarrier] = 1;
+                }
+                console.log(countNumberOfStationID);
+                console.log(countNumberOfStatusCarrier);
+            }
+        });
+    }
+
+    // Function to fetch station data
+    async function getStationData() {
+        await fetch('http://localhost:9000/api/station', {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+        }).then(res => {
+            return res.json();
+        }).then(data => {
+            let stationJson = data.stations.station;
+            // Loop through the station data
+            for (let i = 0; i < stationJson.length; i++) {
+                statusStation = stationJson[i].StatusStation;
+
+                // Count the number of status stations
+                if (countNumberOfStatusStation[statusStation]) {
+                    countNumberOfStatusStation[statusStation]++;
+                } else {
+                    countNumberOfStatusStation[statusStation]++;
+                }
+                console.log(countNumberOfStatusStation);
+            }
+        });
+    }
+</script>
+</body>
+</html>
